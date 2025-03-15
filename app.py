@@ -200,16 +200,6 @@ with col[0]:
 
 with col[1]:
     cols = st.columns(2)
-    for col, (title, column, color) in zip(cols, metrics):
-        display_metric(
-            col,
-            title,
-            df[column].sum(),
-            df_cumulative if time_frame == "Cumulative" else df,
-            column,
-            color,
-        )
-
     # Selected Duration Metrics
     st.caption("Selected Duration")
     df_filtered = df_cumulative if time_frame == "Cumulative" else df
@@ -217,6 +207,16 @@ with col[1]:
         df_filtered["DATE"].dt.date <= end_date
     )
     df_filtered = df_filtered.loc[mask]
+
+    for col, (title, column, color) in zip(cols, metrics[2:]):
+        display_metric(
+            col,
+            title,
+            df_filtered[column].sum(),
+            df_cumulative if time_frame == "Cumulative" else df,
+            column,
+            color,
+        )
 
     cols = st.columns(2)
     for col, (title, column, color) in zip(cols, metrics):
